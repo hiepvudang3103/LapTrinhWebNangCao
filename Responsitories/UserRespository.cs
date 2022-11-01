@@ -50,7 +50,7 @@ namespace blogAPI.Responsitories
             };
         }   
 
-        public UserDto EditUser(User user)
+        public async UserDto EditUser(Guid ID, User usernew)
         {
             var userExist = await _context.Users.FirstOrDefaultAsync(user => user.Id == Id);
             if(userExist == null){
@@ -63,7 +63,9 @@ namespace blogAPI.Responsitories
             userExist.Address = user.Address;
             _context.SaveChanges();
 
-            var result = new UserDto()
+            await _context.SaveChangesAsync();
+
+            return new UserDto()
             {
                 DisplayName = user.DisplayName,
                 Email = user.Email,
