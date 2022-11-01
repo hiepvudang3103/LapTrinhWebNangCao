@@ -30,10 +30,10 @@ namespace blogAPI.Controllers
         {
             _context.Users.Add(new Models.User()
             {
-                DisplayName = "Như Đặng",
-                Email = "nhudangcute@gmail.com",
-                Phone = "không cho đó",
-                Address = "trong tim đức",
+                DisplayName = "Hiệp Đặng",
+                Email = "hiepdang31032001@gmail.com",
+                Phone = "*****",
+                Address = "bien hoa",
                 DateOfBirth = DateTime.UtcNow,
 
             });
