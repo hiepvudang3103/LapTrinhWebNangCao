@@ -4,15 +4,26 @@ using blogAPI.Responsitories;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Code kết nối database
-builder.Services.AddDbContext<AppDbContext>(Options=>{
-    Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddDbContext <AppDBContext>(option =>
+{
+    option.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-builder.Services.AddScoped<UserRespository>();
+
+builder.Services.AddScoped<UserRepository>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+var policyName = "myAPPPolicy";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(policyName, p =>
+    {
+        p.WithOrigins("*").AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
+    });
+});
 
 var app = builder.Build();
 
@@ -24,7 +35,7 @@ if (app.Environment.IsDevelopment())
 }
 
 // app.UseHttpsRedirection();
-
+app.UseCors(policyName);
 app.UseAuthorization();
 
 app.MapControllers();
