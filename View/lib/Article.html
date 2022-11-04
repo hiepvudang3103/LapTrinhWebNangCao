@@ -1,17 +1,17 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>User</title>
+    <title>Article</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
     <!-- Script to get JSON file and display its content -->
     <script type="text/javascript" language="javascript">
 
-function DeleteUser(id) {
+function DeleteArticle(id) {
   
   console.log("Delete!!!");
     $.ajax({
-        url: 'http://localhost:5101/api/user?id='+id,
+        url: 'http://localhost:5101/api/article?id='+id,
         method: 'DELETE',
         contentType: 'application/json',
         dataType: "json",
@@ -25,38 +25,36 @@ function DeleteUser(id) {
         }
         });
 }
-function AddUser() {
+function AddArticle() {
   
   console.log("Add!!!");
     $.ajax({
-        url: 'http://localhost:5101/api/user',
+        url: 'http://localhost:5101/api/article',
         type: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
-            DisplayName:$("#DisplayName").val(),
-    Email: $("#Email").val(),
-    Phone:$("#Phone").val(),
-    DateOfBirth:$("#DateOfBirth").val(),
-    Address:$("#Address").val(),
+            Title:$("#Title").val(),
+    Content: $("#Content").val(),
+    ViewCount:$("#ViewCount").val(),
+    AuthorId:$("#AuthorId").val(),
         }),
         dataType: 'json'
     });
   
 
 }
-function EditUserConfirm(id) {
+function EditArticleConfirm(id) {
   
   console.log("Edit!!!");
     $.ajax({
-        url: 'http://localhost:5101/api/user?id='+id,
+        url: 'http://localhost:5101/api/article?id='+id,
         method: 'PUT',
         contentType: 'application/json',
         data: JSON.stringify({
-            DisplayName:$("#DisplayName").val(),
-    Email: $("#Email").val(),
-    Phone:$("#Phone").val(),
-    DateOfBirth:$("#DateOfBirth").val(),
-    Address:$("#Address").val(),
+          Title :$("#Title").val(),
+          Content: $("#Content").val(),
+          ViewCount:$("#ViewCount").val(),
+          AuthorId:$("#AuthorId").val(),
         }),
         dataType: "json",
         success: function(result) {
@@ -69,16 +67,15 @@ function EditUserConfirm(id) {
         }
         });
 }
-function EditUser(d) {
+function EditArticle(d) {
   
   $("#show").css("display", "block");
-  $.getJSON("http://localhost:5101/api/user", function (emp) {
+  $.getJSON("http://localhost:5101/api/article", function (emp) {
     $("#ID").val(emp[d].id);
-    $("#DisplayName").val(emp[d].displayName);
-    $("#Email").val(emp[d].email);
-    $("#Phone").val(emp[d].phone);
-    $("#DateOfBirth").val(emp[d].dateOfBirth);
-    $("#Address").val(emp[d].address);
+    $("#Title").val(emp[d].title);
+    $("#Content").val(emp[d].content);
+    $("#ViewCount").val(emp[d].viewCount);
+    $("#AuthorId").val(emp[d].authorId);
 
           });
   
@@ -87,15 +84,14 @@ function EditUser(d) {
       $(document).ready(function () {
         
         
-          $.getJSON("http://localhost:5101/api/user", function (emp) {
+          $.getJSON("http://localhost:5101/api/article", function (emp) {
             for (var i = 0; i < emp.length; i++) {
               var td = '<tr><td>' + emp[i].id + '</td>'
-                + '<td>' + emp[i].displayName + '</td>'
-                + '<td>' + emp[i].email + '</td> '
-                + '<td>' + emp[i].phone + '</td> '
-                + '<td>' + emp[i].dateOfBirth + '</td> '
-                + '<td>' + emp[i].address + '</td> '
-                + '<td><button style="margin-right:20px" onclick="DeleteUser(\'' + emp[i].id + '\')">Delete</button><button onclick="EditUser(\'' + i+ '\')">Edit</button></td></tr>'
+                + '<td>' + emp[i].title + '</td>'
+                + '<td>' + emp[i].content + '</td> '
+                + '<td>' + emp[i].viewCount + '</td> '
+                + '<td>' + emp[i].authorId + '</td> '
+                + '<td><button style="margin-right:20px" onclick="DeleteArticle(\'' + emp[i].id + '\')">Delete</button><button onclick="EditArticle(\'' + i+ '\')">Edit</button></td></tr>'
                 ;
                 $("tbody").append("<p>" + td + "</p>");
               
@@ -110,23 +106,22 @@ function EditUser(d) {
           $("#confirmBtn").click(function (event) {
           if($('#ID').val()=="")
           {
-            AddUser();
+            AddArticle();
             $("#show").css("display", "none");
             location.reload();
           }
           else{
-            EditUserConfirm($('#ID').val());
+            EditArticleConfirm($('#ID').val());
             $("#show").css("display", "none");
           }
           
         });
         $("#cancel").click(function (event) {
           $("#ID").val("");
-    $("#DisplayName").val("");
-    $("#Email").val("");
-    $("#Phone").val("");
-    $("#DateOfBirth").val("");
-    $("#Address").val("");
+    $("#Title").val("");
+    $("#Content").val("");
+    $("#ViewCount").val("");
+    $("#AuthorId").val("");
           $("#show").css("display", "none");
         });
 
@@ -150,7 +145,7 @@ function EditUser(d) {
 }
 th, td {
   height: 50px;
-  background-color: #04AA6D;
+  background-color: #9999CC;
 }
 button{
   width: 100px;
@@ -185,7 +180,7 @@ li a:hover:not(.active) {
 }
 
 .active {
-  background-color: #04AA6D;
+  background-color: #9999CC;
 }
 footer {
    position: fixed;
@@ -202,13 +197,13 @@ footer {
 
   <body>
     <ul>
-      <li><a class="active" href="user.html">User</a></li>
-      <li><a href="article.html">Article</a></li>
+      <li><a  href="user.html">User</a></li>
+      <li><a class="active" href="article.html">Article</a></li>
       <li><a href="comment.htm">Comment</a></li>
     </ul>
-    <h1 style="text-align: center;padding-top: 50px;">List User</h1>
+    <h1 style="text-align: center;padding-top: 50px;">List Article</h1>
     <div style="float: right;">
-      <button id="add" style="margin-bottom: 20px;">Add User</button>
+      <button id="add" style="margin-bottom: 20px;">Add Article</button>
     </div>
     
       <div>
@@ -223,16 +218,14 @@ footer {
         <p>
           <label for="fname">ID:</label>
           <input type="text" id="ID" name="fname" disabled style="float: right;margin-left: 10px;"><br><br>
-            <label for="fname">DisplayName:</label>
-            <input type="text" id="DisplayName" name="fname" style="float: right;margin-left: 10px; "><br><br>
-            <label for="lname">Email:</label>
-            <input type="text" id="Email" name="lname" style="float: right;margin-left: 10px;"><br><br>
-            <label for="fname">Phone:</label>
-            <input type="text" id="Phone" name="fname" style="float: right;margin-left: 10px;"><br><br>
-            <label for="lname">DateOfBirth:</label>
-            <input type="text" id="DateOfBirth" name="lname" style="float: right;margin-left: 10px;"><br><br>
-            <label for="fname">Address:</label>
-            <input type="text" id="Address" name="fname" style="float: right;margin-left: 10px;"><br><br>
+            <label for="fname">Title:</label>
+            <input type="text" id="Title" name="fname" style="float: right;margin-left: 10px; "><br><br>
+            <label for="lname">Content:</label>
+            <input type="text" id="Content" name="lname" style="float: right;margin-left: 10px;"><br><br>
+            <label for="fname">ViewCount:</label>
+            <input type="text" id="ViewCount" name="fname" style="float: right;margin-left: 10px;"><br><br>
+            <label for="lname">AuthorId:</label>
+            <input type="text" id="AuthorId" name="lname" style="float: right;margin-left: 10px;"><br><br>
           </form>
         </p>
         <div >
@@ -245,11 +238,10 @@ footer {
       <thead>
           <tr>
               <th>ID</th>
-              <th>Display Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>Date OF Birth</th>
-              <th>Address</th>
+              <th>Title</th>
+              <th>Content</th>
+              <th>ViewCount</th>
+              <th>AuthorId</th>
               <th style="width: 220px;">Button</th>
           </tr>
       </thead>
@@ -262,7 +254,7 @@ footer {
 </div>
 
       <footer>
-        <p>Author: By Hiep Vu Dang<br>
+        <p>Author: by Hiep Vu Dang<br>
       </footer>
   </body>
 </html>
